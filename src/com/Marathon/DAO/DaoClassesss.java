@@ -6,7 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import java.util.ArrayList;
+import java.util.List;
 
 import pojoclassesess.Registraion_pojo;
 import pojoclassesess.login_pojo;
@@ -79,8 +80,8 @@ public class DaoClassesss
 			prep.setString(2, loginpage.getPassword());
 		 //value=prep.executeUpdate(sql_select);
 		 rs = prep.executeQuery();
-		 System.out.println("This is resultset ----------"+rs.getString(0));
-		 System.out.println("This is result set --------"+ rs.getString(0));
+		// System.out.println("This is resultset ----------"+rs.getString(1));
+		 //System.out.println("This is result set --------"+ rs.getString(2));
 		
 			
 		} catch (SQLException e) {
@@ -88,5 +89,29 @@ public class DaoClassesss
 			e.printStackTrace();
 		}
 			return rs;
+	}
+	
+	public List<Registraion_pojo> AllUsersList() throws SQLException
+	{
+		List<Registraion_pojo> lis = new ArrayList<Registraion_pojo>();
+	
+		loadingDriver(DBdriver);
+		Connection con = getconnectioncreation();
+		String str = "select * from registration";
+		Statement stm = con.createStatement();
+		
+		ResultSet rs = stm.executeQuery(str);
+		
+		while(rs.next())
+		{
+			String f_nmae= rs.getString(1);
+			String email = rs.getString(2);
+			String pass = rs.getString(3);
+			lis.add(new Registraion_pojo(f_nmae, email, pass));
+		}
+		
+		
+		return lis;
+		
 	}
 }
